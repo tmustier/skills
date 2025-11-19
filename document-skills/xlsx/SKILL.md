@@ -40,35 +40,40 @@ Unless otherwise stated by the user or existing template
   - ALWAYS specify units in headers ("Revenue, $m", "CAGR, %", etc.)
   - Formats: use thousand separators (,), parentheses for negative values ((123) not -123)), -- for zeros, and spacing to align positive, negative, and zero values (like _), _%_), etc.)
     ```excel
-    // General numbers
-      #,##0_);(#,##0);--_) // 0 decimals
-      #,##0.0_);(#,##0.0);--_) // 1 decimal
+    // General numbers (0 or 1 decimal by default)
+      #,##0_);(#,##0);--_)
+      #,##0.0_);(#,##0.0);--_)
     
     // Currencies
-      // Full currency format
-        (_$* #,##0.00_);($* #,##0.00);--_)  // USD (2 decimals)
-        (_$* #,##0.0m_);($* #,##0.0m);--_) // USD millions (1 decimal)
-        (_$* #,##0.0m_);($* #,##0.0m);--_) // USD thousands (1 decimal)
+      // Full currency format (2 decimals for raw, 1 decimal for millions and thousands)
+        (_$* #,##0.00_);($* #,##0.00);--_)
+        (_$* #,##0.0m_);($* #,##0.0m);--_)
+        (_$* #,##0.0k_);($* #,##0.0k);--_)
+        // Note: (_ creates a space to the left of the currency symbol for positive values, aligning it with negatives
       // Use the full currency format only in the first and last rows of a section with currency figures
-        (_$* #,##0.00_);($* #,##0.00);--_) // First row of one section
-        #,##0.00_);(#,##0.00);--_) // Intermediate rows with currency figures
-        (_$* #,##0.00_);($* #,##0.00);--_) // Last row of one section (e.g., the total)
+        // First row of the section
+        (_$* #,##0.00_);($* #,##0.00);--_)
+        // Then for intermediate rows with currency figures
+        #,##0.00_);(#,##0.00);--_)
+        // Last row of the section (e.g., the total)
+        (_$* #,##0.00_);($* #,##0.00);--_)
   
     // Percentages
       #,##0.0%_);(#,##0.0%);--_%_) // percentages (1 decimal by defaul)
   
-    // Other
-      #,##0.0x_);(#,##0.0x);--_x_) // ratios or valuation multiples (e.g., EV/EBITDA, Interest Coverage)
+    // Ratios or valuation multiples (e.g., EV/EBITDA, Interest Coverage)
+      #,##0.0x_);(#,##0.0x);--_x_)
     ```
     
 ### Table formatting Standards
 
 #### Required Format Rules
 - **Headers and Sub-Headers**: 
-  - Format as a cell with a black fill (RGB: 0,0,0), with white font color (RGB: 255,255,255)
+  - Format cells with black Fill (RGB: 0,0,0) and white Font Color (RGB: 255,255,255)
   - Align Left if column content is text; Align Right if column content is numbers
-- **Headers if Sub-Headers are present**: 
-  - For the Header only, Center Across Selection with Single Accounting Underline if the Header has multiple Sub-Headers present (do not underline otherwise)
+- **Header format if it has multiple Sub-Headers**: 
+  - For the Header only, add Center Across Selection and Single Accounting Underline
+  - Only do this if there are 2 or more Sub-Headers under the Header
 - **Conditional Formatting**:
   - Apply the custom formatting rule =MOD(ROW(),2)=0 -> Cell Fill RGB: 242,242,242 for large tables (NOT to the headers or sub-headers). This will shade alternating rows light grey to make them easier to read
   - Ensure the formatting applies to every row in the table contents
