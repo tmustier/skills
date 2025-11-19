@@ -36,12 +36,31 @@ Unless otherwise stated by the user or existing template
 
 #### Required Format Rules
 - **Years**: Format as text strings (e.g., "2024" not "2,024")
-- **Currency (USD)**: Use $#,##0_);($#,##0);--_) format; ALWAYS specify units in headers ("Revenue ($mm)")
-- **Zeros**: Use number formatting to make all zeros "--", including percentages (e.g., "$#,##0_);($#,##0);--_)")
-- **Percentages**: Default to #,##0.0%_);(#,##0.0%);--_%_) format (one decimal)
-- **Multiples**: Format as #,##0.0x_);(#,##0.0x);--_x_) for valuation multiples (EV/EBITDA, P/E). Note: this is the same exact principle as for %s: one decimal, with consistent alignment between positives, negatives, and zeros
-- **Negative numbers**: Use parentheses (123) not minus -123
-
+- **Numbers**:
+  - ALWAYS specify units in headers ("Revenue, $m", "CAGR, %", etc.)
+  - Formats: use thousand separators (,), parentheses for negative values ((123) not -123)), -- for zeros, and spacing to align positive, negative, and zero values (like _), _%_), etc.)
+    ```excel
+    // General numbers
+      #,##0_);(#,##0);--_) // 0 decimals
+      #,##0.0_);(#,##0.0);--_) // 1 decimal
+    
+    // Currencies
+      // Full currency format
+        (_$* #,##0.00_);($* #,##0.00);--_)  // USD (2 decimals)
+        (_$* #,##0.0m_);($* #,##0.0m);--_) // USD millions (1 decimal)
+        (_$* #,##0.0m_);($* #,##0.0m);--_) // USD thousands (1 decimal)
+      // Use the full currency format only in the first and last rows of a section with currency figures
+        (_$* #,##0.00_);($* #,##0.00);--_) // First row of one section
+        #,##0.00_);(#,##0.00);--_) // Intermediate rows with currency figures
+        (_$* #,##0.00_);($* #,##0.00);--_) // Last row of one section (e.g., the total)
+  
+    // Percentages
+      #,##0.0%_);(#,##0.0%);--_%_) // percentages (1 decimal by defaul)
+  
+    // Other
+      #,##0.0x_);(#,##0.0x);--_x_) // ratios or valuation multiples (e.g., EV/EBITDA, Interest Coverage)
+    ```
+    
 ### Table formatting Standards
 
 #### Required Format Rules
@@ -53,7 +72,7 @@ Unless otherwise stated by the user or existing template
 - **Conditional Formatting**:
   - Apply the custom formatting rule =MOD(ROW(),2)=0 -> Cell Fill RGB: 242,242,242 for large tables (NOT to the headers or sub-headers). This will shade alternating rows light grey to make them easier to read
   - Ensure the formatting applies to every row in the table contents
-  - However, be careful to remove this conditional formatting from key assumptions cells (because it will overwrite their existing cell fill)
+  - However, be careful to remove this conditional formatting from key assumptions cells (because it will overwrite their existing cell fill). You will need to proceed one by one or this will mess up formatting
 
 ### Formula Construction Rules
 
